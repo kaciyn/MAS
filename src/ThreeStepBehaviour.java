@@ -1,20 +1,19 @@
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 
-//TODO ASK WHY THIS NOT WORK
-public class ThreeStep extends Behaviour
+public class ThreeStepBehaviour extends Behaviour
 {
     private int step = 1;
     private int result = 0;
     private boolean finished = false;
-
-
-    public ThreeStep(Agent a)
+    
+    
+    public ThreeStepBehaviour(Agent a)
     {
         //call parent constructor to set myAgent reference
         super(a);
     }
-
+    
     @Override
     public void action()
     {
@@ -36,16 +35,27 @@ public class ThreeStep extends Behaviour
                 break;
         }
     }
-
+    
+    @Override
+    public int onEnd() {
+        System.out.println("Terminating behaviour");
+        reset(); //need to call before adding behaviour again
+        myAgent.addBehaviour(this);//add behaviour back to queue
+        return 0;
+    }
+    
+    @Override
+    public void reset() {
+        step=1;
+        result=0;
+        finished=false;
+    }
+    
     @Override
     public boolean done(){
         return finished;
     }
-
-    @Override
-    public int onEnd(){
-        System.out.println("Terminating behaviour");
-        return 0;
-    }
+    
+    
 }
 
