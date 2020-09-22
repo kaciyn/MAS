@@ -1,11 +1,12 @@
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
+import jade.core.behaviours.CyclicBehaviour;
 
-public class ThreeStepBehaviour extends Behaviour
+public class ThreeStepBehaviour extends CyclicBehaviour
 {
     private int step = 1;
     private int result = 0;
-    private boolean finished = false;
+//    private boolean finished = false;
     
     
     public ThreeStepBehaviour(Agent a)
@@ -31,7 +32,7 @@ public class ThreeStepBehaviour extends Behaviour
             case 3:
                 result += 200;
                 System.out.println(result);
-                finished = true;
+//                finished = true;
                 break;
         }
     }
@@ -48,13 +49,13 @@ public class ThreeStepBehaviour extends Behaviour
     public void reset() {
         step=1;
         result=0;
-        finished=false;
+//        finished=false;
     }
     
-    @Override
-    public boolean done(){
-        return finished;
-    }
+//    @Override
+//    public boolean done(){
+//        return finished;
+//    }
     
     
 }
