@@ -27,6 +27,7 @@ package Agents;
 
 import Utility.GetRandomNumber;
 import jade.core.Agent;
+import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.WakerBehaviour;
 import jade.core.behaviours.TickerBehaviour;
 
@@ -40,41 +41,54 @@ import jade.core.behaviours.TickerBehaviour;
  *
  * @author Giovanni Caire - TILAB
  */
-public class TimeAgent extends Agent {
-
-//     double coin = Math.random();
-     double coin = .6;
+public class TimeAgent extends Agent
+{
     
     protected void setup() {
         System.out.println("Agent " + getLocalName() + " started.");
         
         // Add the TickerBehaviour (period 1 sec)
-        addBehaviour(new TickerBehaviour(this, 1000) {
+        addBehaviour(new TickerBehaviour(this, 2000)
+        {
             protected void onTick() {
                 System.out.println("Agent " + myAgent.getLocalName() + ": tick=" + getTickCount());
             }
         });
         
-        do {
-            // Add the WakerBehaviour (wakeup-time 10 secs)
-            addBehaviour(new WakerBehaviour(this, 5000) {
-                protected void handleElapsedTimeout() {
-                    System.out.println(coin);
-    
-                    if (coin < .5) {
-                        System.out.println("Agent " + myAgent.getLocalName() + ": It's wakeup-time. Bye...");
-                        myAgent.doDelete();
-                    }
-                    else {
-                        System.out.println("Adding new behaviour");
-                        coin = Math.random();
-                    }
-                }
-            });
-    
-        }
-        while (coin >= .5);
-        
+        // Add the WakerBehaviour (wakeup-time 10 secs)
+        addBehaviour(new HalfWaker(this, 10000));
         
     }
+    
+    class HalfWaker extends WakerBehaviour
+    {
+        
+        public HalfWaker(Agent a, long timeout) {
+            super(a, timeout);
+        }
+        
+        protected void onWake() {
+            double coin=Math.random();
+            if (coin >= .5) {
+                System.out.println(coin+" adding new");
+                myAgent.addBehaviour(new HalfWaker(myAgent, 10000)
+                {
+                    protected void handleElapsedTimeout() {
+                        System.out.println("Agent " + myAgent.getLocalName() + ": It's wakeup-time. Bye...");
+                        myAgent.doDelete();
+                        
+                    }
+                });
+            }
+            
+            else {
+                System.out.println("Agent " + myAgent.getLocalName() + ": It's wakeup-time. Bye...");
+                myAgent.doDelete();
+            }
+        }
+    }
+    
 }
+
+
+
