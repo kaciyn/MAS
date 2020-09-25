@@ -32,9 +32,14 @@ public class Application {
 //                newAgent.start();
 //            }
             
-            AgentController timeAgent = myContainer.createNewAgent("time", Agents.TimeAgent.class.getCanonicalName(), null);
-            timeAgent.start();
-            
+//            AgentController timeAgent = myContainer.createNewAgent("time", Agents.TimeAgent.class.getCanonicalName(), null);
+//            timeAgent.start();
+    
+//            AgentController fsmAgent = myContainer.createNewAgent("fsm", Agents.MeAsAFSMAgent.class.getCanonicalName(), null);
+//            fsmAgent.start();
+    
+            AgentController complexAgent = myContainer.createNewAgent("complex", Agents.ComplexBehaviourAgent.class.getCanonicalName(), null);
+            complexAgent.start();
             
         } catch (Exception e) {
             System.out.println("Exception starting agent: " + e.toString());
